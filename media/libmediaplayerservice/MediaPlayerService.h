@@ -49,7 +49,7 @@ class MediaRecorderClient;
 #if CALLBACK_ANTAGONIZER
 class Antagonizer {
 public:
-    Antagonizer(notify_callback_f cb, void* client);
+    Antagonizer(notify_callback_f cb, const wp<IMediaPlayer> &client);
     void start() { mActive = true; }
     void stop() { mActive = false; }
     void kill();
@@ -61,7 +61,7 @@ private:
     Condition           mCondition;
     bool                mExit;
     bool                mActive;
-    void*               mClient;
+    wp<IMediaPlayer>    mClient;
     notify_callback_f   mCb;
 };
 #endif
@@ -335,7 +335,7 @@ private:
         void                    setDataSource_post(const sp<MediaPlayerBase>& p,
                                                    status_t status);
 
-        static  void            notify(void* cookie, int msg,
+        static  void            notify(const wp<IMediaPlayer> &cookie, int msg,
                                        int ext1, int ext2, const Parcel *obj);
 
                 pid_t           pid() const { return mPid; }
